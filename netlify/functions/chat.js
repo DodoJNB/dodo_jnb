@@ -3,27 +3,33 @@ export default async (request) => {
     return new Response('Method Not Allowed', { status: 405 });
   }
 
-  const DODO_SYSTEM = `Jesteś DODO AI — asystentem strony portfolio DODO.
+  const now = new Date();
+  const data = {
+    godzina: now.toLocaleTimeString('pl-PL'),
+    data: now.toLocaleDateString('pl-PL'),
+    dzienTygodnia: ['niedziela','poniedziałek','wtorek','środa','czwartek','piątek','sobota'][now.getDay()]
+  };
+
+  const DODO_SYSTEM = `Jesteś DODO AI — asystentem strony portfolio DODO. Dzisiaj jest ${data.dzienTygodnia}, ${data.data}, godzina ${data.godzina}.
 
 KIM JEST DODO:
-- Twórca shotów (krótkich filmów) na YouTube i TikTok
-- 2+ lata doświadczenia, tworzy content o CS2 (Counter-Strike 2)
-- Ma 300k views na TikToku i 100k views na YouTube Shorts
-- Nagrywa, montuje i tworzy własne shoty na swoje kanały
+- Twórca shotów na YouTube i TikTok o CS2
+- 2+ lata doświadczenia
+- 300k views na TikToku, 100k na YouTube
 
 JEGO KANAŁY:
 - YouTube: https://youtube.com/@Dodo_JNB
 - TikTok: https://tiktok.com/@dodo_jnb
 
 USŁUGI:
-- Pakiet tygodniowy: 125 zł
-- Pakiet miesięczny: 500 zł
-- Oba zawierają nagranie i montaż shota
+- Tygodniowy: 125 zł
+- Miesięczny: 500 zł
+- Nagranie + montaż shota
 
 SOCIAL MEDIA:
-- Instagram: https://instagram.com/4gh._0
-- TikTok: https://tiktok.com/@dodo_jnb
-- YouTube: https://youtube.com/@Dodo_JNB
+- IG: https://instagram.com/4gh._0
+- TT: https://tiktok.com/@dodo_jnb
+- YT: https://youtube.com/@Dodo_JNB
 - Donate: https://tipply.pl/@4_gh
 - Discord: dodo_3033
 
@@ -35,18 +41,19 @@ KONTAKT:
 - Email: xdodo.jnb@gmail.com
 - Discord: dodo_3033
 
-ZASADY ODPOWIADANIA:
+ZASADY:
 - Mów naturalnie, luźno, po polsku
-- Jeśli pytanie jest ogólne (np. matematyka, ciekawostki) - odpowiedz normalnie
-- Jeśli pytanie dotyczy DODO - odpowiedz na temat
-- Krótkie odpowiedzi (2-4 zdania)
-- Używaj emoji z umiarem
-- Linki podawaj jako zwykły adres URL`;
+- Jeśli pytanie ogólne - odpowiedz normalnie
+- Jeśli o DODO - odpowiedz na temat
+- 2-4 zdania, emoji z umiarem`;
 
   try {
     const { messages } = await request.json();
     const CF_TOKEN = process.env.CF_TOKEN;
     const CF_ACCOUNT = 'a05a99e1f5dd71a33ffa4f4ced1f2985';
+
+    // System prompt z aktualnym czasem
+    const systemMsg = { role: 'system', content: DODO_SYSTEM };
 
     const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/ai/run/@cf/meta/llama-3.3-70b-instruct-fp8-fast`, {
       method: 'POST',
@@ -55,20 +62,13 @@ ZASADY ODPOWIADANIA:
         'Authorization': `Bearer ${CF_TOKEN}`
       },
       body: JSON.stringify({
-        messages: [
-          { role: 'system', content: DODO_SYSTEM },
-          ...messages
-        ],
+        messages: [systemMsg, ...messages],
         max_tokens: 400
       })
     });
 
-    const data = await res.json();
-    
-    let reply = 'Napisz na xdodo.jnb@gmail.com 🙏';
-    if (data.result?.response) {
-      reply = data.result.response;
-    }
+    const result = await res.json();
+    let reply = result.result?.response || 'Napisz na xdodo.jnb@gmail.com 🙏';
 
     return new Response(JSON.stringify({ reply }), {
       status: 200,
@@ -78,9 +78,8 @@ ZASADY ODPOWIADANIA:
       }
     });
   } catch (e) {
-    console.error('Błąd chat:', e);
     return new Response(JSON.stringify({ 
-      reply: 'Błąd serwera — napisz na xdodo.jnb@gmail.com 📧' 
+      reply: 'Błąd — napisz na xdodo.jnb@gmail.com 📧' 
     }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
