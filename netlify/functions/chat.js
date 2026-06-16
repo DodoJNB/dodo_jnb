@@ -12,22 +12,26 @@ Odpowiadaj po polsku, krótko (2-3 zdania), luźno. Emoji z umiarem.`;
 
   try {
     const { messages } = await request.json();
-    const GEMINI_KEY = process.env.GEMINI_KEY;
+    const CF_TOKEN = process.env.CF_TOKEN;
+    const CF_ACCOUNT = 'a05a99e1f5dd71a33ffa4f4ced1f2985';
 
-    const contents = [
-      { role: 'user', parts: [{ text: DODO_SYSTEM }] },
-      { role: 'model', parts: [{ text: 'Hej! Jestem DODO AI, chętnie pomogę!' }] },
-      ...messages.map(m => ({ role: m.role === 'user' ? 'user' : 'model', parts: [{ text: m.content }] }))
-    ];
-
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`, {
+    const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/ai/run/@cf/meta/llama-3.1-8b-instruct`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ contents, generationConfig: { maxOutputTokens: 300 } })
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${CF_TOKEN}`
+      },
+      body: JSON.stringify({
+        messages: [
+          { role: 'system', content: DODO_SYSTEM },
+          ...messages
+        ],
+        max_tokens: 300
+      })
     });
 
     const data = await res.json();
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Napisz na xdodo.jnb@gmail.com 🙏';
+    const reply = data.result?.response || 'Napisz na xdodo.jnb@gmail.com 🙏';
 
     return new Response(JSON.stringify({ reply }), {
       status: 200,
