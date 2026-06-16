@@ -31,6 +31,7 @@ Odpowiadaj po polsku, krótko (2-3 zdania), luźno. Emoji z umiarem.`;
     });
 
     const data = await res.json();
+    console.log('CF response:', JSON.stringify(data));
     const reply = data.result?.response || 'Napisz na xdodo.jnb@gmail.com 🙏';
 
     return new Response(JSON.stringify({ reply }), {
@@ -38,6 +39,7 @@ Odpowiadaj po polsku, krótko (2-3 zdania), luźno. Emoji z umiarem.`;
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
     });
   } catch (e) {
+    console.log('Error:', e.message);
     return new Response(JSON.stringify({ reply: 'Błąd — napisz na xdodo.jnb@gmail.com' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
