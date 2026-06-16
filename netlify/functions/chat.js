@@ -15,7 +15,7 @@ Odpowiadaj po polsku, krótko (2-3 zdania), luźno. Emoji z umiarem.`;
     const CF_TOKEN = process.env.CF_TOKEN;
     const CF_ACCOUNT = 'a05a99e1f5dd71a33ffa4f4ced1f2985';
 
-    const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/ai/run/@cf/meta/llama-3.1-8b-instruct`, {
+    const res = await fetch(`https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/ai/run/@cf/meta/llama-3.3-70b-instruct-fp8-fast`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -31,7 +31,6 @@ Odpowiadaj po polsku, krótko (2-3 zdania), luźno. Emoji z umiarem.`;
     });
 
     const data = await res.json();
-    console.log('CF response:', JSON.stringify(data));
     const reply = data.result?.response || 'Napisz na xdodo.jnb@gmail.com 🙏';
 
     return new Response(JSON.stringify({ reply }), {
@@ -39,7 +38,6 @@ Odpowiadaj po polsku, krótko (2-3 zdania), luźno. Emoji z umiarem.`;
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
     });
   } catch (e) {
-    console.log('Error:', e.message);
     return new Response(JSON.stringify({ reply: 'Błąd — napisz na xdodo.jnb@gmail.com' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
