@@ -20,14 +20,13 @@ Odpowiadaj po polsku, krótko (2-3 zdania), luźno. Emoji z umiarem.`;
       ...messages.map(m => ({ role: m.role === 'user' ? 'user' : 'model', parts: [{ text: m.content }] }))
     ];
 
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`, {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ contents, generationConfig: { maxOutputTokens: 300 } })
     });
 
     const data = await res.json();
-    console.log('Gemini response:', JSON.stringify(data));
     const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Napisz na xdodo.jnb@gmail.com 🙏';
 
     return new Response(JSON.stringify({ reply }), {
@@ -35,7 +34,6 @@ Odpowiadaj po polsku, krótko (2-3 zdania), luźno. Emoji z umiarem.`;
       headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' }
     });
   } catch (e) {
-    console.log('Error:', e.message);
     return new Response(JSON.stringify({ reply: 'Błąd — napisz na xdodo.jnb@gmail.com' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' }
