@@ -1,4 +1,3 @@
-
 export default async (request) => {
   if (request.method !== 'POST') {
     return new Response('Method Not Allowed', { status: 405 });
@@ -42,4 +41,4 @@ Odpowiadaj po polsku, krótko (2-3 zdania), luźno. Emoji z umiarem.`;
   }
 };
 
-export const config = { path: '/.netlify/functions/chat' };
+export const config = { path: '/.
