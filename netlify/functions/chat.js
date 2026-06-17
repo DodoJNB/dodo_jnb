@@ -399,10 +399,10 @@ exports.handler = async (event) => {
 
   try {
     const CF_TOKEN = process.env.CF_TOKEN;
-    const CF_ACCOUNT = process.env.CF_ACCOUNT;
+    const CF_ACCOUNT = process.env.CF_ACCOUNT || 'a05a99e1f5dd71a33ffa4f4ced1f2985';
 
-    if (!CF_TOKEN || !CF_ACCOUNT) {
-      console.error('Brak CF_TOKEN lub CF_ACCOUNT w zmiennych środowiskowych');
+    if (!CF_TOKEN) {
+      console.error('Brak CF_TOKEN');
       return {
         statusCode: 500,
         headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
