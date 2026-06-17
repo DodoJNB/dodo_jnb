@@ -297,6 +297,47 @@ async function callCloudflareAI(url, options, maxRetries = 2) {
   return { ok: false, status: 429 };
 }
 
+// Wysyła log (pytanie + odpowiedź albo błąd) na Discord webhook.
+// Działa "fire-and-forget" — błąd wysyłki nigdy nie wpływa na odpowiedź do użytkownika.
+async function logToDiscord({ userMessage, reply, status, isError }) {
+  const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
+  if (!webhookUrl) return;
+
+  const timestamp = new Date().toLocaleString('pl-PL', { timeZone: 'Europe/Warsaw' });
+  const safeUser = (userMessage || '(brak)').slice(0, 1000);
+  const safeReply = (reply || '(brak)').slice(0, 1000);
+
+  const embed = isError
+    ? {
+        title: '⚠️ Błąd DODO AI',
+        color: 0xdc2626,
+        fields: [
+          { name: 'Status', value: String(status), inline: true },
+          { name: 'Czas', value: timestamp, inline: true },
+          { name: 'Pytanie użytkownika', value: safeUser }
+        ]
+      }
+    : {
+        title: '💬 Nowa rozmowa DODO AI',
+        color: 0x22c55e,
+        fields: [
+          { name: 'Czas', value: timestamp },
+          { name: 'Pytanie', value: safeUser },
+          { name: 'Odpowiedź', value: safeReply }
+        ]
+      };
+
+  try {
+    await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ embeds: [embed] })
+    });
+  } catch (e) {
+    console.error('Błąd wysyłki do Discord:', e);
+  }
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };
@@ -378,6 +419,8 @@ exports.handler = async (event) => {
     if (!res.ok) {
       console.error('CF AI error:', res.status);
       const reply = res.status === 429 ? BUSY_REPLY : FALLBACK_REPLY;
+      const lastUserMsg = [...safeMessages].reverse().find(m => m.role === 'user')?.content;
+      await logToDiscord({ userMessage: lastUserMsg, reply, status: res.status, isError: true });
       return {
         statusCode: 200,
         headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
@@ -387,6 +430,8 @@ exports.handler = async (event) => {
 
     const data = await res.json();
     const reply = data.result?.response || FALLBACK_REPLY;
+    const lastUserMsg = [...safeMessages].reverse().find(m => m.role === 'user')?.content;
+    await logToDiscord({ userMessage: lastUserMsg, reply, status: 200, isError: false });
 
     return {
       statusCode: 200,
