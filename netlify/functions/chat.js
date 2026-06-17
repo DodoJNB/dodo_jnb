@@ -275,6 +275,27 @@ const CORS_HEADERS = {
 };
 
 const FALLBACK_REPLY = 'Coś poszło nie tak — napisz na xdodo.jnb@gmail.com 🙏';
+const BUSY_REPLY = 'Chwilowo mam za dużo zapytań — spróbuj za minutkę albo napisz na xdodo.jnb@gmail.com 🙏';
+
+// Wywołuje Cloudflare AI z automatycznym powtórzeniem przy błędzie 429 (rate limit).
+// Robi do 2 dodatkowych prób z rosnącym opóźnieniem (exponential backoff).
+async function callCloudflareAI(url, options, maxRetries = 2) {
+  let lastStatus = null;
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    const res = await fetch(url, options);
+    if (res.ok) return res;
+
+    lastStatus = res.status;
+    if (res.status !== 429) return res; // inny błąd — nie ma sensu powtarzać
+
+    if (attempt < maxRetries) {
+      const delayMs = 500 * Math.pow(2, attempt); // 500ms, 1000ms, ...
+      await new Promise(r => setTimeout(r, delayMs));
+    }
+  }
+  console.error('CF AI: limit zapytań nadal przekroczony po retry, ostatni status:', lastStatus);
+  return { ok: false, status: 429 };
+}
 
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
@@ -335,7 +356,7 @@ exports.handler = async (event) => {
       };
     }
 
-    const res = await fetch(
+    const res = await callCloudflareAI(
       `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/ai/run/@cf/meta/llama-3.3-70b-instruct-fp8-fast`,
       {
         method: 'POST',
@@ -356,10 +377,11 @@ exports.handler = async (event) => {
 
     if (!res.ok) {
       console.error('CF AI error:', res.status);
+      const reply = res.status === 429 ? BUSY_REPLY : FALLBACK_REPLY;
       return {
         statusCode: 200,
         headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reply: FALLBACK_REPLY })
+        body: JSON.stringify({ reply })
       };
     }
 
