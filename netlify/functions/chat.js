@@ -265,7 +265,24 @@ exports.handler = async (event) => {
 
     let parsedBody;
     try {
-      parsedBody = JSON.parse(event.body || '{}');
+      // Odcinamy zbyt duże body PRZED parsowaniem JSON — to tańsze i bezpieczniejsze
+      // niż próba sparsowania dużego/złośliwego payloadu. 20KB to dużo więcej niż
+      // potrzeba na 12 wiadomości x 1000 znaków, ale nie pozwala na nadużycia.
+      const MAX_BODY_BYTES = 20000;
+      const rawBody = event.body || '';
+      const bodyByteLength = event.isBase64Encoded
+        ? Buffer.byteLength(rawBody, 'base64')
+        : Buffer.byteLength(rawBody, 'utf8');
+
+      if (bodyByteLength > MAX_BODY_BYTES) {
+        return {
+          statusCode: 413,
+          headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ reply: FALLBACK_REPLY })
+        };
+      }
+
+      parsedBody = JSON.parse(rawBody || '{}');
     } catch {
       return {
         statusCode: 400,
