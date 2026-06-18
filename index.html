@@ -7,6 +7,9 @@
 <meta name="description" content="DODO JNB — Shooter & Editor. Tworzę content, montuję i rozwijam się każdego dnia.">
 <title>DODO JNB | Shooter & Editor</title>
 <link rel="canonical" href="https://dodo-jnb.netlify.app/">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="256x256" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
@@ -83,7 +86,9 @@ nav.scrolled { box-shadow: 0 1px 20px rgba(0,0,0,0.06); }
   font-family: 'DM Serif Display', serif;
   font-size: 22px; letter-spacing: -0.5px;
   color: var(--fg); text-decoration: none;
+  display: inline-flex; align-items: center;
 }
+.nav-logo-img { height: 32px; width: 32px; border-radius: 8px; display: block; }
 .nav-links { display: flex; gap: 32px; }
 .nav-links a {
   font-size: 13px; color: var(--muted);
@@ -327,6 +332,7 @@ footer {
   max-width: 1100px; margin: 0 auto;
 }
 .foot-brand { font-family: 'DM Serif Display', serif; font-size: 18px; color: var(--fg); }
+.foot-brand-img { height: 28px; width: 28px; border-radius: 6px; display: block; }
 .foot-copy { font-size: 12px; color: var(--muted); }
 .foot-links { display: flex; align-items: center; gap: 20px; }
 .foot-links a {
@@ -531,7 +537,9 @@ footer {
   background: var(--fg); color: var(--bg);
   display: flex; align-items: center; justify-content: center;
   font-family: 'DM Serif Display', serif; font-size: 14px; flex-shrink: 0;
+  overflow: hidden;
 }
+.chat-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .chat-header-info { flex: 1; }
 .chat-header-name { font-size: 14px; font-weight: 600; color: var(--fg); line-height: 1.2; }
 .chat-header-status { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 5px; }
@@ -690,7 +698,7 @@ footer {
 <body>
 
 <nav id="mainNav">
-  <a class="nav-logo" href="#">DODO</a>
+  <a class="nav-logo" href="#"><img src="/dodo-logo-small.png" alt="DODO" class="nav-logo-img"></a>
   <div class="nav-links">
     <a href="#about">O mnie</a>
     <a href="#portfolio">Portfolio</a>
@@ -909,7 +917,7 @@ footer {
 </div>
 
 <footer class="sr">
-  <span class="foot-brand">DODO JNB</span>
+  <img src="/dodo-logo-small.png" alt="DODO" class="foot-brand-img">
   <div class="foot-links">
     <a href="/polityka.html">Polityka Prywatności</a>
     <span class="foot-copy">© 2025 Wszystkie prawa zastrzeżone</span>
@@ -927,7 +935,7 @@ footer {
 
 <div id="chat-window" role="dialog" aria-label="Chat z DODO AI">
   <div class="chat-header">
-    <div class="chat-avatar">D</div>
+    <div class="chat-avatar"><img src="/dodo-logo-small.png" alt="DODO AI"></div>
     <div class="chat-header-info">
       <div class="chat-header-name">DODO AI</div>
       <div class="chat-header-status"><span class="chat-status-dot"></span>Online</div>
