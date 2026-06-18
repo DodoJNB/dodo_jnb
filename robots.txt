@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://dodo-jnb.netlify.app/sitemap.xml
