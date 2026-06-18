@@ -243,6 +243,22 @@ async function logToDiscord({ userMessage, reply, status, isError }) {
   }
 }
 
+/* Rate limiting na poziomie infrastruktury Netlify — działa NIEZALEŻNIE od
+   pamięci procesu funkcji (w przeciwieństwie do rateLimitMap zdefiniowanej
+   wcześniej w tym pliku, która może "rozjechać się" przy równoległych
+   wywołaniach na różnych instancjach serverless). To jest druga, solidniejsza
+   warstwa — obie razem dają realną ochronę: ta złapie nadmiarowy ruch zanim
+   w ogóle odpali się kod funkcji, rateLimitMap dodatkowo różnicuje odpowiedź
+   per-IP w kodzie (np. żeby zwrócić przyjazny komunikat zamiast surowego 429). */
+exports.config = {
+  rateLimit: {
+    action: 'rate_limit',
+    aggregateBy: ['ip', 'domain'],
+    windowSize: 60,
+    windowLimit: 8
+  }
+};
+
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers: CORS_HEADERS, body: '' };
