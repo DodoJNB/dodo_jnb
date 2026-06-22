@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Polityka prywatności strony DODO.">
+<title>Polityka Prywatności | DODO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #fafaf9;
+  --fg: #111110;
+  --muted: #78716c;
+  --border: rgba(0,0,0,0.08);
+  --surface: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e0e0d;
+    --fg: #f5f4f0;
+    --muted: #8a8680;
+    --border: rgba(255,255,255,0.08);
+    --surface: #161614;
+  }
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.7;
+}
+.wrap { max-width: 760px; margin: 0 auto; padding: 64px 24px 100px; }
+.back {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 13px; color: var(--muted); text-decoration: none;
+  margin-bottom: 40px;
+}
+.back:hover { color: var(--fg); }
+h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(32px, 5vw, 44px);
+  letter-spacing: -1px;
+  margin-bottom: 8px;
+}
+.updated { font-size: 13px; color: var(--muted); margin-bottom: 48px; }
+h2 {
+  font-size: 20px; font-weight: 600;
+  margin-top: 40px; margin-bottom: 14px;
+  padding-bottom: 10px; border-bottom: 1px solid var(--border);
+}
+p, li { font-size: 15px; color: var(--fg); margin-bottom: 12px; }
+ul { padding-left: 22px; margin-bottom: 12px; }
+a { color: var(--fg); text-decoration: underline; }
+strong { font-weight: 600; }
+.contact-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px 24px; margin-top: 12px;
+}
+footer {
+  margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--border);
+  font-size: 12px; color: var(--muted); text-align: center;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">&larr; Wróć na stronę główną</a>
+
+  <h1>Polityka Prywatności</h1>
+  <div class="updated">Ostatnia aktualizacja: 22.06.2026 (uzupełniono o informację o anonimowym liczniku odwiedzin)</div>
+
+  <p>Niniejsza Polityka opisuje, jakie dane osobowe zbieramy w serwisie DODO (formularz kontaktowy oraz chatbot DODO AI) oraz w jakim celu, na jakiej podstawie i jakie prawa Ci przysługują zgodnie z RODO (Rozporządzenie UE 2016/679).</p>
+
+  <h2>1. Administrator danych</h2>
+  <p>Administratorem danych osobowych jest operator serwisu DODO.</p>
+  <p>Kontakt w sprawach danych osobowych: <a href="mailto:xdodo.jnb@gmail.com">xdodo.jnb@gmail.com</a>.</p>
+
+  <h2>2. Jakie dane zbieramy</h2>
+  <p><strong>a) Formularz kontaktowy</strong></p>
+  <ul>
+    <li>imię/nick, adres email oraz treść wiadomości — podane przez Ciebie dobrowolnie w formularzu kontaktowym, w celu odpowiedzi na zapytanie.</li>
+  </ul>
+  <p><strong>b) Chatbot DODO AI</strong></p>
+  <ul>
+    <li>treść wiadomości wysyłanych do chatbota — przekazywana do usługi Cloudflare Workers AI w celu wygenerowania odpowiedzi.</li>
+    <li>treść rozmów (pytanie i odpowiedź) może być dodatkowo przekazywana na prywatny kanał Discord administratora serwisu, w celu monitorowania jakości działania chatbota i wykrywania błędów.</li>
+  </ul>
+  <p><strong>c) Dane techniczne</strong></p>
+  <ul>
+    <li>podstawowe dane techniczne (np. adres IP, typ przeglądarki) mogą być przetwarzane automatycznie przez dostawców infrastruktury (Netlify, Cloudflare) w ramach ich własnych usług hostingowych i bezpieczeństwa — niezależnie od administratora serwisu DODO.</li>
+    <li>adres IP jest dodatkowo wykorzystywany tymczasowo i lokalnie przez funkcję chatbota w celu ograniczenia liczby wiadomości wysyłanych w krótkim czasie (ochrona przed nadużyciami) — adres IP nie jest przy tym zapisywany na trwałe ani udostępniany dalej, a licznik jest przechowywany tylko w pamięci serwera funkcji i zanika automatycznie po krótkim czasie.</li>
+  </ul>
+  <p><strong>d) Licznik odwiedzin</strong></p>
+  <ul>
+    <li>serwis zlicza dzienną, zagregowaną liczbę odwiedzin strony (np. "120 odwiedzin dzisiaj"), wyświetlaną publicznie na stronie głównej.</li>
+    <li>licznik nie zapisuje adresu IP, identyfikatora urządzenia ani żadnych innych danych osobowych — przechowywana jest wyłącznie sama liczba odwiedzin przypisana do danego dnia.</li>
+    <li>aby uniknąć wielokrotnego zliczania tej samej osoby przy odświeżaniu strony, w pamięci sesyjnej przeglądarki (sessionStorage) zapisywany jest tymczasowy znacznik informujący, że dana sesja już została zliczona w danym dniu — znacznik usuwany jest automatycznie po zamknięciu karty przeglądarki.</li>
+  </ul>
+
+  <h2>3. Cele i podstawy prawne</h2>
+  <ul>
+    <li><strong>Odpowiedź na wiadomość z formularza kontaktowego</strong> — art. 6 ust. 1 lit. b lub f RODO (działanie na Twoją prośbę / uzasadniony interes w prowadzeniu korespondencji).</li>
+    <li><strong>Działanie chatbota DODO AI</strong> — art. 6 ust. 1 lit. b lub f RODO (świadczenie funkcji czatu na Twoje żądanie).</li>
+    <li><strong>Monitorowanie jakości chatbota i wykrywanie błędów (logi na Discord)</strong> — art. 6 ust. 1 lit. f RODO (uzasadniony interes administratora w utrzymaniu poprawnie działającej usługi).</li>
+    <li><strong>Wyświetlanie zagregowanej, dziennej liczby odwiedzin strony</strong> — art. 6 ust. 1 lit. f RODO (uzasadniony interes administratora w prezentowaniu statystyk popularności serwisu; dane są w pełni zanonimizowane i nie pozwalają na identyfikację żadnej osoby).</li>
+  </ul>
+
+  <h2>4. Okres przechowywania</h2>
+  <ul>
+    <li>Wiadomości z formularza kontaktowego — przechowywane w skrzynce email administratora do czasu zakończenia korespondencji lub wcześniejszego usunięcia.</li>
+    <li>Treść rozmów z chatbotem przesyłana na Discord — przechowywana na kanale Discord do czasu ręcznego usunięcia przez administratora.</li>
+    <li>Zagregowana liczba odwiedzin przypisana do danego dnia — przechowywana bezterminowo w formie statystycznej (sama liczba, bez możliwości powiązania z konkretną osobą).</li>
+  </ul>
+
+  <h2>5. Odbiorcy danych / podmioty przetwarzające</h2>
+  <ul>
+    <li><strong>Netlify</strong> — hosting strony i funkcji backendowych.</li>
+    <li><strong>Cloudflare</strong> — dostawca modelu AI używanego przez chatbota DODO AI.</li>
+    <li><strong>Discord</strong> — platforma, na którą mogą być przekazywane logi rozmów z chatbotem w celu monitorowania jakości usługi.</li>
+    <li><strong>EmailJS</strong> — usługa pośrednicząca w wysyłce wiadomości z formularza kontaktowego na adres email administratora.</li>
+  </ul>
+  <p>Nie sprzedajemy danych osobowych ani nie udostępniamy ich w celach marketingowych podmiotom trzecim.</p>
+
+  <h2>6. Przekazywanie poza EOG</h2>
+  <p>Usługi takie jak Cloudflare i Discord mogą przetwarzać dane na serwerach znajdujących się poza Europejskim Obszarem Gospodarczym. W takich przypadkach przekazywanie danych odbywa się w oparciu o mechanizmy zgodne z RODO stosowane przez te podmioty (m.in. standardowe klauzule umowne).</p>
+
+  <h2>7. Pliki cookie i pamięć lokalna</h2>
+  <p>Serwis nie używa śledzących plików cookie ani narzędzi reklamowych. Wykorzystujemy wyłącznie elementy techniczne, niezbędne do działania:</p>
+  <ul>
+    <li>tymczasowy znacznik czasu w pamięci lokalnej przeglądarki (sessionStorage), służący do ograniczenia częstotliwości wysyłania wiadomości z formularza kontaktowego (cooldown) — usuwany automatycznie po zamknięciu karty przeglądarki.</li>
+    <li>tymczasowy znacznik w pamięci sesyjnej przeglądarki (sessionStorage), służący do tego, by licznik odwiedzin nie zliczał tej samej sesji więcej niż raz dziennie — usuwany automatycznie po zamknięciu karty przeglądarki.</li>
+  </ul>
+  <p>Strona korzysta również z czcionek Google Fonts oraz bibliotek Font Awesome i EmailJS ładowanych z zewnętrznych serwerów (CDN), co może wiązać się z przekazaniem adresu IP do tych dostawców w trakcie wczytywania strony.</p>
+  <p>Elementy te są ściśle niezbędne do funkcjonowania serwisu, dlatego prawo nie wymaga dla nich zgody (banera cookie).</p>
+
+  <h2>8. Twoje prawa</h2>
+  <p>Masz prawo do: dostępu do danych, sprostowania, usunięcia ("prawo do bycia zapomnianym"), ograniczenia przetwarzania, wniesienia sprzeciwu oraz przenoszenia danych. Aby skorzystać z praw, napisz na:</p>
+  <div class="contact-box">
+    📧 <a href="mailto:xdodo.jnb@gmail.com">xdodo.jnb@gmail.com</a>
+  </div>
+  <p>Masz również prawo wnieść skargę do organu nadzorczego — Prezesa Urzędu Ochrony Danych Osobowych (ul. Stawki 2, 00-193 Warszawa, <a href="https://uodo.gov.pl" target="_blank" rel="noopener">uodo.gov.pl</a>).</p>
+
+  <h2>9. Dobrowolność podania danych</h2>
+  <p>Podanie danych jest dobrowolne, ale niezbędne do skorzystania z formularza kontaktowego lub chatbota DODO AI. Bez podania danych te funkcje nie będą dostępne.</p>
+
+  <h2>10. Dzieci</h2>
+  <p>Serwis nie jest kierowany do osób poniżej 16 roku życia. Osoby niepełnoletnie nie powinny przekazywać danych osobowych bez zgody opiekuna prawnego.</p>
+
+  <h2>11. Zmiany Polityki</h2>
+  <p>Polityka może być aktualizowana. Aktualna wersja jest zawsze dostępna pod tym adresem, z datą ostatniej aktualizacji na górze strony.</p>
+
+  <footer>© 2026 DODO · Polityka Prywatności</footer>
+</div>
+</body>
+</html>
