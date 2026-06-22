@@ -1,0 +1,7 @@
+{
+  "name": "dodo-jnb-site",
+  "private": true,
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}
