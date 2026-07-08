@@ -1,3 +1,15 @@
+// Rok w stopce ustawiany automatycznie — nie trzeba już ręcznie poprawiać go co roku.
+document.addEventListener('DOMContentLoaded', () => {
+  const footCopy = document.querySelector('.foot-copy');
+  if (footCopy) footCopy.textContent = `© ${new Date().getFullYear()} Wszystkie prawa zastrzeżone`;
+});
+
+// Usuwa ekran powitalny z drzewa DOM po zakończeniu animacji (czystość i dostępność).
+window.addEventListener('load', () => {
+  const intro = document.getElementById('intro');
+  if (intro) setTimeout(() => intro.remove(), 2200);
+});
+
 const chatHistory = [];
 let chatOpen = false;
 let firstOpen = true;
@@ -40,7 +52,9 @@ function linkify(text) {
   const urlRe = /(https?:\/\/[^\s<]+[^\s<.,;:!?)'"])/g;
   const pathRe = /(^|[\s(])(\/[a-zA-Z0-9_\-\/]+\.[a-zA-Z0-9]+)/g;
   const emailRe = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
-  const bareDomainRe = /(^|[\s(])((?:instagram\.com|tiktok\.com|youtube\.com|kick\.com|tipply\.pl|dodo-jnb\.netlify\.app)\/[a-zA-Z0-9_\-\/@.]*[a-zA-Z0-9_\-\/@])/gi;
+  // Zamiast sztywnej listy domen — rozpoznaje dowolną domenę z rozszerzeniem
+  // (np. nowyserwis.pl/cos), więc nie trzeba jej ręcznie dopisywać przy każdej zmianie.
+  const bareDomainRe = /(^|[\s(])((?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}\/[a-zA-Z0-9_\-\/@.]*[a-zA-Z0-9_\-\/@])/g;
 
   return escaped
     .replace(urlRe, '<a href="$1" target="_blank" rel="noopener">$1</a>')
